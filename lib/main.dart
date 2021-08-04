@@ -40,10 +40,11 @@ class _MyHomePageState extends State<MyHomePage>
     for (int i = 0; i < 3; i++) {
       _key.add(new GlobalKey());
     }
+    position=Offset(20,0);
   }
 
   List<GlobalKey> _key = [];
-
+Offset position;
   @override
   Widget build(BuildContext context) {
     _animationController.repeat();
@@ -65,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage>
                 alignment: Alignment.center,
                 children: [
                   Positioned(
-                    right:25,
+                    right:position.dx,
                     child: CustomPaint(
                         painter: AnimatedCustomPainter(
                             _animationController.view,
@@ -73,47 +74,58 @@ class _MyHomePageState extends State<MyHomePage>
                             MediaQuery.of(context).size.width)),
                   ),
                   Padding(
-              padding: EdgeInsets.all(10),
+                   padding: EdgeInsets.all(10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         InkWell(
+                           
                             key: _key[0],
                             onTap: () {
-                                //  _animationController.reverse();
 
-                              RenderBox box =
-                                  _key[0].currentContext.findRenderObject();
-                              Offset position = box.localToGlobal(
+                              setState(() {
+                                           RenderBox box =
+                                  _key[2].currentContext.findRenderObject();
+                              position
+                               = box.localToGlobal(
                                   Offset.zero); //this is global position
                               double y = position.dy;
 
-                              print("${position.dx}+" + y.toString());
+                              print("${position.dx}+" + y.toString());                      
+                                                            });
+                                //  _animationController.reverse();
+
+                           
                             },
                             child: Icon(Icons.home,size: 30,)),
                         InkWell(
                             key: _key[1],
                             onTap: () {
-                                _animationController.forward();
-                              RenderBox box =
+                                   setState(() {
+                                           RenderBox box =
                                   _key[1].currentContext.findRenderObject();
-                              Offset position = box.localToGlobal(
+                              position
+                               = box.localToGlobal(
                                   Offset.zero); //this is global position
                               double y = position.dy;
 
-                              print("${position.dx}+" + y.toString());
+                              print("${position.dx}+" + y.toString());                      
+                                                            });
                             },
                             child: Icon(Icons.home,size: 30,)),
                         InkWell(
                             key: _key[2],
                             onTap: () {
-                              RenderBox box =
-                                  _key[2].currentContext.findRenderObject();
-                              Offset position = box.localToGlobal(
+                                setState(() {
+                                           RenderBox box =
+                                  _key[0].currentContext.findRenderObject();
+                              position
+                               = box.localToGlobal(
                                   Offset.zero); //this is global position
                               double y = position.dy;
 
-                              print("${position.dx}+" + y.toString());
+                              print("${position.dx}+" + y.toString());                      
+                                                            });
                             },
                             child: Icon(Icons.phone,size: 30,)),
                       ],
@@ -160,7 +172,7 @@ class AnimatedCustomPainter extends CustomPainter {
   AnimatedCustomPainter(Animation<double> animation, height, width)
       : _size =
             Tween<double>(begin: 10, end: 30).animate(animation),
-        _offset = Tween<double>(begin: 0, end: /*height -300*/ 0)
+        _offset = Tween<double>(begin: 0, end: /*height -300*/ 5)
             .animate(animation),
         _color = ColorTween(begin: Colors.white, end: Colors.blue)
             .animate(animation),
