@@ -58,17 +58,18 @@ Offset position;
               margin: EdgeInsets.all(10),
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(10)),
+              color: Colors.blue.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(10)),
               height: 80,
               width: double.infinity,
               child: Stack(
                 alignment: Alignment.center,
                 children: [
                   Positioned(
-                    right:position.dx,
+                   right:position.dx,
                     child: CustomPaint(
                         painter: AnimatedCustomPainter(
+                             Offset(0,0),
                             _animationController.view,
                             MediaQuery.of(context).size.height,
                             MediaQuery.of(context).size.width)),
@@ -79,7 +80,8 @@ Offset position;
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         InkWell(
-                           
+                                   customBorder: new CircleBorder(),
+
                             key: _key[0],
                             onTap: () {
 
@@ -99,6 +101,7 @@ Offset position;
                             },
                             child: Icon(Icons.home,size: 30,)),
                         InkWell(
+                           customBorder: new CircleBorder(),
                             key: _key[1],
                             onTap: () {
                                    setState(() {
@@ -114,6 +117,7 @@ Offset position;
                             },
                             child: Icon(Icons.home,size: 30,)),
                         InkWell(
+                           customBorder: new CircleBorder(),
                             key: _key[2],
                             onTap: () {
                                 setState(() {
@@ -145,21 +149,7 @@ Offset position;
   }
 }
 
-class Ball extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint _paint = new Paint()
-      ..color = Colors.green
-      ..strokeWidth = 3;
 
-    canvas.drawCircle(Offset(80, size.height - 40), 30, _paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
-}
 
 class AnimatedCustomPainter extends CustomPainter {
   final _paint = Paint();
@@ -169,10 +159,11 @@ class AnimatedCustomPainter extends CustomPainter {
 
   final Animation<Color> _color;
   Size height;
-  AnimatedCustomPainter(Animation<double> animation, height, width)
+  AnimatedCustomPainter(Offset postion,Animation<double> animation, height, width)
       : _size =
             Tween<double>(begin: 10, end: 30).animate(animation),
-        _offset = Tween<double>(begin: 0, end: /*height -300*/ 5)
+            
+        _offset = Tween<double>(begin: postion.dx, end: /*height -300*/ 5)
             .animate(animation),
         _color = ColorTween(begin: Colors.white, end: Colors.blue)
             .animate(animation),
@@ -183,7 +174,7 @@ class AnimatedCustomPainter extends CustomPainter {
     _paint.color = _color.value;
     canvas.drawCircle(
       Offset(
-         _offset.value, //size.width / 2,
+       _offset.value, //size.width / 2,
       0 // size.height + _offset.value - 400,
       ),
       _size.value,
